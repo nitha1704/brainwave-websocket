@@ -5,10 +5,17 @@ import Home from "./pages/Home";
 import Cpu from "./pages/Cpu";
 import CpuChartJs from "./pages/CpuChartJs";
 import CpuChartJsBlack from "./pages/CpuChartJsBlack";
+import CpuChartBuffer from "./pages/CpuChartBuffer";
+
 import SingleChartPresent from "./pages/SingleChartPresent";
 import MultipleChartPresent from "./pages/MultipleChartPresent";
+
 import SingleChartWebSocket from "./pages/SingleChartWebsocket";
 import MultipleChartWebSocket from "./pages/MultipleChartWebsocket";
+
+import SingleChartWebSocketBuffer from "./pages/SingleChartWebsocketBuffer";
+import MultipleChartWebSocketBuffer from "./pages/MultipleChartWebsocketBuffer";
+
 import "./App.css";
 
 function App() {
@@ -21,6 +28,7 @@ function App() {
           <Route exact path="/cpu" element={<Cpu />} />
           <Route exact path="/cpuchartjs" element={<CpuChartJs />} />
           <Route exact path="/cpuchartjsblack" element={<CpuChartJsBlack />} />
+          <Route exact path="/cpuchartbuffer" element={<CpuChartBuffer />} />
           <Route
             exact
             path="/singlechartpresent"
@@ -41,6 +49,17 @@ function App() {
             exact
             path="/multiplechartwebsocket"
             element={<MultipleChartWebSocket />}
+          />
+
+          <Route
+            exact
+            path="/singlechartwebsocketbuffer"
+            element={<SingleChartWebSocketBuffer />}
+          />
+          <Route
+            exact
+            path="/multiplechartwebsocketbuffer"
+            element={<MultipleChartWebSocketBuffer />}
           />
         </Routes>
       </div>

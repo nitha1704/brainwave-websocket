@@ -196,7 +196,7 @@ const SingleChartWebSocket = () => {
       <div className="wrapper">
         <LineCharts chartData={cpuUsageData} />
         <div className="attentions">
-          <h1>Attentions</h1>
+          <h1>Attention</h1>
           <div className="light-wrapper">
             <div className="light red-light">
               <div
@@ -214,10 +214,10 @@ const SingleChartWebSocket = () => {
               ></div>
             </div>
           </div>
-          <p style={{ fontSize: "30px" }}>
+          <div style={{ fontSize: "1.5vw" }}>
             <span>Value: </span>
             <span style={{ fontWeight: "bold" }}>{scoreValueNumber}</span>
-          </p>
+          </div>
         </div>
       </div>
     </SingleChartWebSocketSection>
@@ -226,13 +226,13 @@ const SingleChartWebSocket = () => {
 
 const SingleChartWebSocketSection = styled.section`
   .wrapper {
-    width: 1400px;
-    height: 500px;
+    width: 83vw;
+    height: auto;
     position: relative;
   }
   .attentions {
     margin-top: 50px;
-    padding: 20px;
+    padding: 1.5vw;
     display: inline-block;
     background-color: crimson;
     color: white;
@@ -241,12 +241,12 @@ const SingleChartWebSocketSection = styled.section`
     right: -18%;
     text-align: center;
     h1 {
-      font-size: 35px;
+      font-size: 2vw;
     }
     .light {
-      width: 50px;
-      height: 50px;
-      margin: 20px auto;
+      width: 2.5vw;
+      height: 2.5vw;
+      margin: 3vw auto;
       .color {
         width: 100%;
         height: 100%;

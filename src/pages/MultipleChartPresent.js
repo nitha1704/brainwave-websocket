@@ -180,7 +180,7 @@ const MultipleChartPresent = () => {
         </div>
       </div>
       <div className="attentions">
-        <h1>Attentions</h1>
+        <h1>Attention</h1>
         <div className="light-wrapper">
           <div className="light red-light">
             <div className="color"></div>
@@ -201,12 +201,12 @@ const MultipleChartPresentSection = styled.section`
   position: relative;
   .wrapper {
     display: grid;
-    grid-template-columns: 700px 700px;
-    gap: 50px;
+    grid-template-columns: 40vw 40vw;
+    gap: 3vw;
   }
   .attentions {
     margin-top: 50px;
-    padding: 20px;
+    padding: 1.5vw;
     display: inline-block;
     background-color: crimson;
     color: white;
@@ -214,12 +214,13 @@ const MultipleChartPresentSection = styled.section`
     top: 15%;
     right: 0%;
     h1 {
-      font-size: 35px;
+      font-size: 2vw;
     }
     .light {
-      width: 50px;
-      height: 50px;
-      margin: 30px auto;
+      width: 2.5vw;
+      height: 2.5vw;
+      margin: 3vw auto;
+
       .color {
         width: 100%;
         height: 100%;
@@ -242,6 +243,12 @@ const MultipleChartPresentSection = styled.section`
       .color.active {
         background-color: green;
       }
+    }
+  }
+
+  @media (max-width: 1200px) {
+    .wrapper {
+      grid-template-columns: 80vw;
     }
   }
 `;

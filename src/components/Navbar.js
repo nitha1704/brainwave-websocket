@@ -17,13 +17,13 @@ const Navbar = () => {
 
 const Nav = styled.nav`
   position: fixed;
-  width: 40%;
+  width: 100%;
   bottom: 0;
   right: 0;
   background-color: black;
   padding: 10px;
   z-index: 1;
-
+  text-align: right;
   a {
     color: white;
     font-size: 20px;

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import io from "socket.io-client";
+import CBuffer from "CBuffer";
 import { BarChart, LineCharts } from "../components/Charts";
 import thaiCovidDataJSON from "../data/today-cases-by-provinces.json";
 
@@ -8,17 +9,22 @@ const socket = io("http://localhost:4200", {
   transports: ["websocket", "polling"],
 });
 
-const MultipleChartWebSocket = () => {
+const MultipleChartWebSocketBuffer = () => {
   const mockNumber = [9, 1, 8, 0, 4, 8, 3, 2, 7, 4];
-  const [scoreValueNumber, setScoreValueNumber] = useState();
+  let myBuff1 = CBuffer(10);
+  let myBuff2 = CBuffer(10);
+  let myBuff3 = CBuffer(10);
+  let myBuff4 = CBuffer(10);
+  let labelsBuffer = CBuffer(10);
 
+  const [scoreValueNumber, setScoreValueNumber] = useState();
   const [thaiCovidData, setThaiCovidData] = useState({
     data: {
-      labels: [1, 2, 3, 4, 5],
+      labels: labelsBuffer.data,
       datasets: [
         {
           label: "CH1",
-          data: [0.18, 0.38, 0.58, 0.78, 0.98],
+          data: [],
           backgroundColor: [
             "rgba(255, 99, 132, 0.2)",
             "rgba(255, 159, 64, 0.2)",
@@ -53,11 +59,11 @@ const MultipleChartWebSocket = () => {
   });
   const [thaiCovidData2, setThaiCovidData2] = useState({
     data: {
-      labels: [1, 2, 3, 4, 5],
+      labels: labelsBuffer.data,
       datasets: [
         {
           label: "CH2",
-          data: [1.8, 3.8, 5.8, 7.8, 9.8],
+          data: [],
           backgroundColor: [
             "rgba(255, 99, 132, 0.2)",
             "rgba(255, 159, 64, 0.2)",
@@ -92,11 +98,11 @@ const MultipleChartWebSocket = () => {
   });
   const [thaiCovidData3, setThaiCovidData3] = useState({
     data: {
-      labels: [1, 2, 3, 4, 5],
+      labels: labelsBuffer.data,
       datasets: [
         {
           label: "CH3",
-          data: [18, 25, 30, 35, 40],
+          data: [],
           backgroundColor: [
             "rgba(255, 99, 132, 0.2)",
             "rgba(255, 159, 64, 0.2)",
@@ -131,11 +137,11 @@ const MultipleChartWebSocket = () => {
   });
   const [thaiCovidData4, setThaiCovidData4] = useState({
     data: {
-      labels: [1, 2, 3, 4, 5],
+      labels: labelsBuffer.data,
       datasets: [
         {
           label: "CH4",
-          data: [50, 55, 60, 65, 70],
+          data: [],
           backgroundColor: [
             "rgba(255, 99, 132, 0.2)",
             "rgba(255, 159, 64, 0.2)",
@@ -170,19 +176,45 @@ const MultipleChartWebSocket = () => {
   });
 
   useEffect(() => {
+    labelsBuffer.push(
+      "x1",
+      "x2",
+      "x3",
+      "x4",
+      "x5",
+      "x6",
+      "x7",
+      "x8",
+      "x9",
+      "x10"
+    );
+
     socket.on("getCpuUsageInfo", (item) => {
       console.log(item);
       let cpuUsageValue = Number(item.cpuUsageValue.toFixed(2));
       let scoreValue = Number(item.scoreValue.toFixed(2));
+
+      myBuff1.push(cpuUsageValue);
+      myBuff2.push(cpuUsageValue + 20);
+      myBuff3.push(cpuUsageValue + 40);
+      myBuff4.push(cpuUsageValue + 60);
+      labelsBuffer.push(item.name);
+
+      let myBuffGraph1 = myBuff1.data;
+      let myBuffGraph2 = myBuff2.data;
+      let myBuffGraph3 = myBuff3.data;
+      let myBuffGraph4 = myBuff4.data;
+
+      console.log("myBuffGraph1", myBuffGraph1);
 
       setScoreValueNumber(scoreValue);
 
       setThaiCovidData((prevData) => {
         let newData = {
           data: {
-            labels: [...prevData.data.labels, item.name],
+            labels: labelsBuffer.data,
             datasets: prevData.data.datasets.map((item, index) => {
-              return { ...item, data: [...item.data, cpuUsageValue] };
+              return { ...item, data: myBuffGraph1 };
             }),
           },
         };
@@ -192,9 +224,9 @@ const MultipleChartWebSocket = () => {
       setThaiCovidData2((prevData) => {
         let newData = {
           data: {
-            labels: [...prevData.data.labels, item.name],
+            labels: labelsBuffer.data,
             datasets: prevData.data.datasets.map((item, index) => {
-              return { ...item, data: [...item.data, cpuUsageValue + 20] };
+              return { ...item, data: myBuffGraph2 };
             }),
           },
         };
@@ -204,11 +236,11 @@ const MultipleChartWebSocket = () => {
       setThaiCovidData3((prevData) => {
         let newData = {
           data: {
-            labels: [...prevData.data.labels, item.name],
+            labels: labelsBuffer.data,
             datasets: prevData.data.datasets.map((item, index) => {
               return {
                 ...item,
-                data: [...item.data, cpuUsageValue + 40],
+                data: myBuffGraph3,
               };
             }),
           },
@@ -219,11 +251,11 @@ const MultipleChartWebSocket = () => {
       setThaiCovidData4((prevData) => {
         let newData = {
           data: {
-            labels: [...prevData.data.labels, item.name],
+            labels: labelsBuffer.data,
             datasets: prevData.data.datasets.map((item, index) => {
               return {
                 ...item,
-                data: [...item.data, cpuUsageValue + 60],
+                data: myBuffGraph4,
               };
             }),
           },
@@ -262,7 +294,7 @@ const MultipleChartWebSocket = () => {
   });
 
   return (
-    <MultipleChartWebSocketSection>
+    <MultipleChartWebSocketBufferSection>
       <div className="wrapper">
         <div>
           <LineCharts chartData={thaiCovidData} />
@@ -299,11 +331,11 @@ const MultipleChartWebSocket = () => {
           <span style={{ fontWeight: "bold" }}>{scoreValueNumber}</span>
         </div>
       </div>
-    </MultipleChartWebSocketSection>
+    </MultipleChartWebSocketBufferSection>
   );
 };
 
-const MultipleChartWebSocketSection = styled.section`
+const MultipleChartWebSocketBufferSection = styled.section`
   position: relative;
   .wrapper {
     display: grid;
@@ -345,4 +377,4 @@ const MultipleChartWebSocketSection = styled.section`
   }
 `;
 
-export default MultipleChartWebSocket;
+export default MultipleChartWebSocketBuffer;

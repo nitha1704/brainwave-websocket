@@ -119,7 +119,7 @@ const SingleChartPresent = () => {
       <div className="wrapper">
         <LineCharts chartData={thaiCovidData} />
         <div className="attentions">
-          <h1>Attentions</h1>
+          <h1>Attention</h1>
           <div className="light-wrapper">
             <div className="light red-light">
               <div className="color"></div>
@@ -139,13 +139,13 @@ const SingleChartPresent = () => {
 
 const SingleChartPresentSection = styled.section`
   .wrapper {
-    width: 1400px;
-    height: 500px;
+    width: 83vw;
+    height: auto;
     position: relative;
   }
   .attentions {
     margin-top: 50px;
-    padding: 20px;
+    padding: 1.5vw;
     display: inline-block;
     background-color: crimson;
     color: white;
@@ -153,12 +153,12 @@ const SingleChartPresentSection = styled.section`
     top: 15%;
     right: -18%;
     h1 {
-      font-size: 35px;
+      font-size: 2vw;
     }
     .light {
-      width: 50px;
-      height: 50px;
-      margin: 30px auto;
+      width: 2.5vw;
+      height: 2.5vw;
+      margin: 3vw auto;
       .color {
         width: 100%;
         height: 100%;

@@ -3,6 +3,7 @@ const io = require("socket.io")(server, {
   transports: ["websocket", "polling"],
 });
 const os = require("os-utils");
+const CBuffer = require("CBuffer");
 const port = 4200;
 let tick = 0;
 
