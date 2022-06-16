@@ -11,11 +11,27 @@ const socket = io("http://localhost:4200", {
 
 const MultipleChartWebSocketBuffer = () => {
   const mockNumber = [9, 1, 8, 0, 4, 8, 3, 2, 7, 4];
-  let myBuff1 = CBuffer(10);
-  let myBuff2 = CBuffer(10);
-  let myBuff3 = CBuffer(10);
-  let myBuff4 = CBuffer(10);
-  let labelsBuffer = CBuffer(10);
+  let myBuff1 = CBuffer(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+  let myBuff2 = CBuffer(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+  let myBuff3 = CBuffer(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+  let myBuff4 = CBuffer(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+  let labelsBuffer = CBuffer(
+    "x1",
+    "x2",
+    "x3",
+    "x4",
+    "x5",
+    "x6",
+    "x7",
+    "x8",
+    "x9",
+    "x10"
+  );
+
+  const [totalValueGraph1, setTotalValueGraph1] = useState([]);
+  const [totalValueGraph2, setTotalValueGraph2] = useState([]);
+  const [totalValueGraph3, setTotalValueGraph3] = useState([]);
+  const [totalValueGraph4, setTotalValueGraph4] = useState([]);
 
   const [scoreValueNumber, setScoreValueNumber] = useState();
   const [thaiCovidData, setThaiCovidData] = useState({
@@ -176,19 +192,6 @@ const MultipleChartWebSocketBuffer = () => {
   });
 
   useEffect(() => {
-    labelsBuffer.push(
-      "x1",
-      "x2",
-      "x3",
-      "x4",
-      "x5",
-      "x6",
-      "x7",
-      "x8",
-      "x9",
-      "x10"
-    );
-
     socket.on("getCpuUsageInfo", (item) => {
       console.log(item);
       let cpuUsageValue = Number(item.cpuUsageValue.toFixed(2));
@@ -205,6 +208,36 @@ const MultipleChartWebSocketBuffer = () => {
       let myBuffGraph3 = myBuff3.data;
       let myBuffGraph4 = myBuff4.data;
 
+      let myBuffGraph1Refactor = myBuffGraph1.map((x) => x);
+      let myBuffGraph2Refactor = myBuffGraph2.map((x) => x);
+      let myBuffGraph3Refactor = myBuffGraph3.map((x) => x);
+      let myBuffGraph4Refactor = myBuffGraph4.map((x) => x);
+
+      if (myBuff1.start === 0) {
+        setTotalValueGraph1((prevValue) => [
+          ...prevValue,
+          myBuffGraph1Refactor,
+        ]);
+      }
+      if (myBuff2.start === 0) {
+        setTotalValueGraph2((prevValue) => [
+          ...prevValue,
+          myBuffGraph2Refactor,
+        ]);
+      }
+      if (myBuff3.start === 0) {
+        setTotalValueGraph3((prevValue) => [
+          ...prevValue,
+          myBuffGraph3Refactor,
+        ]);
+      }
+      if (myBuff4.start === 0) {
+        setTotalValueGraph4((prevValue) => [
+          ...prevValue,
+          myBuffGraph4Refactor,
+        ]);
+      }
+
       console.log("myBuffGraph1", myBuffGraph1);
 
       setScoreValueNumber(scoreValue);
@@ -214,7 +247,7 @@ const MultipleChartWebSocketBuffer = () => {
           data: {
             labels: labelsBuffer.data,
             datasets: prevData.data.datasets.map((item, index) => {
-              return { ...item, data: myBuffGraph1 };
+              return { ...item, data: myBuffGraph1Refactor };
             }),
           },
         };
@@ -226,7 +259,7 @@ const MultipleChartWebSocketBuffer = () => {
           data: {
             labels: labelsBuffer.data,
             datasets: prevData.data.datasets.map((item, index) => {
-              return { ...item, data: myBuffGraph2 };
+              return { ...item, data: myBuffGraph2Refactor };
             }),
           },
         };
@@ -240,7 +273,7 @@ const MultipleChartWebSocketBuffer = () => {
             datasets: prevData.data.datasets.map((item, index) => {
               return {
                 ...item,
-                data: myBuffGraph3,
+                data: myBuffGraph3Refactor,
               };
             }),
           },
@@ -255,7 +288,7 @@ const MultipleChartWebSocketBuffer = () => {
             datasets: prevData.data.datasets.map((item, index) => {
               return {
                 ...item,
-                data: myBuffGraph4,
+                data: myBuffGraph4Refactor,
               };
             }),
           },
@@ -292,6 +325,19 @@ const MultipleChartWebSocketBuffer = () => {
     yellowActive: false,
     greenActive: false,
   });
+
+  useEffect(() => {
+    console.log("totalValueGraph1", totalValueGraph1);
+  }, [totalValueGraph1]);
+  useEffect(() => {
+    console.log("totalValueGraph2", totalValueGraph2);
+  }, [totalValueGraph2]);
+  useEffect(() => {
+    console.log("totalValueGraph3", totalValueGraph3);
+  }, [totalValueGraph3]);
+  useEffect(() => {
+    console.log("totalValueGraph4", totalValueGraph4);
+  }, [totalValueGraph4]);
 
   return (
     <MultipleChartWebSocketBufferSection>

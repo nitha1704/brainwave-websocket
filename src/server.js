@@ -27,7 +27,7 @@ io.on("connection", (client) => {
         scoreValue: Math.floor(Math.random() * 3),
       });
     });
-  }, 500);
+  }, 100);
 });
 
 server.listen(port, () => {

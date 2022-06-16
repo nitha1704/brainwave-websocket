@@ -11,14 +11,29 @@ const socket = io("http://localhost:4200", {
 
 const SingleChartWebSocketBuffer = () => {
   const mockNumber = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-  let myBuff1 = CBuffer(10);
-  let myBuff2 = CBuffer(10);
-  let myBuff3 = CBuffer(10);
-  let myBuff4 = CBuffer(10);
-  let labelsBuffer = CBuffer(10);
+  let myBuff1 = CBuffer(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+  let myBuff2 = CBuffer(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+  let myBuff3 = CBuffer(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+  let myBuff4 = CBuffer(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+  let labelsBuffer = CBuffer(
+    "x1",
+    "x2",
+    "x3",
+    "x4",
+    "x5",
+    "x6",
+    "x7",
+    "x8",
+    "x9",
+    "x10"
+  );
+
+  const [totalValueGraph1, setTotalValueGraph1] = useState([]);
+  const [totalValueGraph2, setTotalValueGraph2] = useState([]);
+  const [totalValueGraph3, setTotalValueGraph3] = useState([]);
+  const [totalValueGraph4, setTotalValueGraph4] = useState([]);
 
   const [scoreValueNumber, setScoreValueNumber] = useState();
-  const [labelB, setLabelB] = useState();
   const [cpuUsageData, setCpuUsageData] = useState({
     data: {
       labels: labelsBuffer.data,
@@ -135,19 +150,6 @@ const SingleChartWebSocketBuffer = () => {
   });
 
   useEffect(() => {
-    labelsBuffer.push(
-      "x1",
-      "x2",
-      "x3",
-      "x4",
-      "x5",
-      "x6",
-      "x7",
-      "x8",
-      "x9",
-      "x10"
-    );
-
     socket.on("getCpuUsageInfo", (item) => {
       console.log(item);
       let cpuUsageValue = Number(item.cpuUsageValue.toFixed(2));
@@ -157,18 +159,47 @@ const SingleChartWebSocketBuffer = () => {
       myBuff2.push(cpuUsageValue + 20);
       myBuff3.push(cpuUsageValue + 40);
       myBuff4.push(cpuUsageValue + 60);
-      labelsBuffer.push(item.name);
+      labelsBuffer.push(`x${item.name}`);
 
       let myBuffGraph1 = myBuff1.data;
       let myBuffGraph2 = myBuff2.data;
       let myBuffGraph3 = myBuff3.data;
       let myBuffGraph4 = myBuff4.data;
 
-      console.log("labelsBuffer", labelsBuffer.data);
+      let myBuffGraph1Refactor = myBuffGraph1.map((x) => x);
+      let myBuffGraph2Refactor = myBuffGraph2.map((x) => x);
+      let myBuffGraph3Refactor = myBuffGraph3.map((x) => x);
+      let myBuffGraph4Refactor = myBuffGraph4.map((x) => x);
+
+      if (myBuff1.start === 0) {
+        setTotalValueGraph1((prevValue) => [
+          ...prevValue,
+          myBuffGraph1Refactor,
+        ]);
+      }
+
+      if (myBuff2.start === 0) {
+        setTotalValueGraph2((prevValue) => [
+          ...prevValue,
+          myBuffGraph2Refactor,
+        ]);
+      }
+
+      if (myBuff3.start === 0) {
+        setTotalValueGraph3((prevValue) => [
+          ...prevValue,
+          myBuffGraph3Refactor,
+        ]);
+      }
+
+      if (myBuff4.start === 0) {
+        setTotalValueGraph4((prevValue) => [
+          ...prevValue,
+          myBuffGraph4Refactor,
+        ]);
+      }
 
       setScoreValueNumber(scoreValue);
-
-      setLabelB(labelsBuffer.data);
       setCpuUsageData((prevData) => {
         let newData = {
           data: {
@@ -176,7 +207,7 @@ const SingleChartWebSocketBuffer = () => {
             datasets: [
               {
                 label: "CH1",
-                data: myBuffGraph1,
+                data: myBuffGraph1Refactor,
                 backgroundColor: [
                   "rgba(255, 99, 132, 0.2)",
                   "rgba(255, 159, 64, 0.2)",
@@ -199,7 +230,7 @@ const SingleChartWebSocketBuffer = () => {
               },
               // {
               //   label: "CH2",
-              //   data: myBuffGraph2,
+              //   data: myBuffGraph2Refactor,
               //   backgroundColor: [
               //     "rgba(255, 99, 132, 0.2)",
               //     "rgba(255, 159, 64, 0.2)",
@@ -222,7 +253,7 @@ const SingleChartWebSocketBuffer = () => {
               // },
               // {
               //   label: "CH3",
-              //   data: myBuffGraph3,
+              //   data: myBuffGraph3Refactor,
               //   backgroundColor: [
               //     "rgba(255, 99, 132, 0.2)",
               //     "rgba(255, 159, 64, 0.2)",
@@ -245,7 +276,7 @@ const SingleChartWebSocketBuffer = () => {
               // },
               // {
               //   label: "CH4",
-              //   data: myBuffGraph4,
+              //   data: myBuffGraph4Refactor,
               //   backgroundColor: [
               //     "rgba(255, 99, 132, 0.2)",
               //     "rgba(255, 159, 64, 0.2)",
@@ -301,8 +332,17 @@ const SingleChartWebSocketBuffer = () => {
   }, [cpuUsageData]);
 
   useEffect(() => {
-    console.log("labelB", labelB);
-  }, [labelB]);
+    console.log("totalValueGraph1", totalValueGraph1);
+  }, [totalValueGraph1]);
+  // useEffect(() => {
+  //   console.log("totalValueGraph2", totalValueGraph2);
+  // }, [totalValueGraph2]);
+  // useEffect(() => {
+  //   console.log("totalValueGraph3", totalValueGraph3);
+  // }, [totalValueGraph3]);
+  // useEffect(() => {
+  //   console.log("totalValueGraph4", totalValueGraph4);
+  // }, [totalValueGraph4]);
 
   return (
     <SingleChartWebSocketBufferSection>
